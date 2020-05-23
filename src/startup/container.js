@@ -5,7 +5,12 @@ const config = require("../config");
 const app = require(".");
 
 // Services
-const { HomeService } = require("../services");
+const {
+  HomeService,
+  UserService,
+  IdeaService,
+  CommentService,
+} = require("../services");
 
 // Controllers
 const { HomeController } = require("../controllers");
@@ -36,6 +41,9 @@ container
   })
   .register({
     HomeService: asClass(HomeService).singleton(),
+    UserService: asClass(HomeService).singleton(),
+    CommentService: asClass(HomeService).singleton(),
+    IdeaService: asClass(HomeService).singleton(),
   })
   .register({
     HomeController: asClass(HomeController.bind(HomeController)).singleton(),
