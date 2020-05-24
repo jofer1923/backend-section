@@ -1,7 +1,7 @@
 let _userService = null;
 class UserController {
   constructor({ UserService }) {
-    _userService = UserController;
+    _userService = UserService;
   }
   async get(req, res) {
     const { userId } = req.params;
