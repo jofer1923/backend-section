@@ -1,6 +1,6 @@
 const BaseService = require("./base.service");
-let _commentRepository = null;
-_ideaRepository = null;
+let _commentRepository = null,
+  _ideaRepository = null;
 
 class CommentService extends BaseService {
   constructor({ CommentRepository, IdeaRepository }) {
@@ -13,14 +13,16 @@ class CommentService extends BaseService {
     if (!ideaId) {
       const error = new Error();
       error.status = 400;
-      erros.message = "ideaId must be sent";
+      error.message = "ideaId must be sent";
       throw error;
     }
+
     const idea = await _ideaRepository.get(ideaId);
+
     if (!idea) {
       const error = new Error();
       error.status = 404;
-      erros.message = "idea does not exist";
+      error.message = "idea does not exist";
       throw error;
     }
 
@@ -28,22 +30,27 @@ class CommentService extends BaseService {
     return comments;
   }
 
-  async createComment(comment, ideaId) {
+  async createComment(comment, ideaId, userId) {
     if (!ideaId) {
       const error = new Error();
       error.status = 400;
-      erros.message = "ideaId must be sent";
-      throw error;
-    }
-    const idea = await _ideaRepository.get(ideaId);
-    if (!idea) {
-      const error = new Error();
-      error.status = 404;
-      erros.message = "idea does not exist";
+      error.message = "ideaId must be sent";
       throw error;
     }
 
-    const createdComment = await _commentRepository.create(comment);
+    const idea = await _ideaRepository.get(ideaId);
+
+    if (!idea) {
+      const error = new Error();
+      error.status = 404;
+      error.message = "idea does not exist";
+      throw error;
+    }
+
+    const createdComment = await _commentRepository.create({
+      ...comment,
+      author: userId,
+    });
     idea.comments.push(createdComment);
 
     return await _ideaRepository.update(ideaId, { comments: idea.comments });

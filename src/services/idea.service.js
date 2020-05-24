@@ -11,25 +11,27 @@ class IdeaService extends BaseService {
     if (!author) {
       const error = new Error();
       error.status = 400;
-      erros.message = "userId must be sent";
+      error.message = "userId must be sent";
       throw error;
     }
 
     return await _ideaRepository.getUserIdeas(author);
   }
+
   async upvoteIdea(ideaId) {
     if (!ideaId) {
       const error = new Error();
       error.status = 400;
-      erros.message = "ideaId must be sent";
+      error.message = "ideaId must be sent";
       throw error;
     }
 
-    const idea = (await _ideaRepository) - get(ideaId);
+    const idea = await _ideaRepository.get(ideaId);
+
     if (!idea) {
       const error = new Error();
       error.status = 404;
-      erros.message = "idea does not exist";
+      error.message = "idea does not exist";
       throw error;
     }
 
@@ -42,21 +44,22 @@ class IdeaService extends BaseService {
     if (!ideaId) {
       const error = new Error();
       error.status = 400;
-      erros.message = "ideaId must be sent";
+      error.message = "ideaId must be sent";
       throw error;
     }
 
-    const idea = (await _ideaRepository) - get(ideaId);
+    const idea = await _ideaRepository.get(ideaId);
+
     if (!idea) {
       const error = new Error();
       error.status = 404;
-      erros.message = "idea does not exist";
+      error.message = "idea does not exist";
       throw error;
     }
 
     idea.downvotes.push(true);
 
-    return await _ideaRepository.update(ideaId, { upvotes: idea.downvotes });
+    return await _ideaRepository.update(ideaId, { downvotes: idea.downvotes });
   }
 }
 

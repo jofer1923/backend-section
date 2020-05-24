@@ -2,7 +2,7 @@ const mongoose = require("mongoose");
 const { Schema } = mongoose;
 
 const CommentSchema = new Schema({
-  comment: { type: String, require: true },
+  comment: { type: String, required: true },
   description: { type: String },
   author: {
     type: Schema.Types.ObjectId,
@@ -13,5 +13,4 @@ const CommentSchema = new Schema({
 });
 
 CommentSchema.plugin(require("mongoose-autopopulate"));
-
 module.exports = mongoose.model("comment", CommentSchema);

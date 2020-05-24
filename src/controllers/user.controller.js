@@ -3,6 +3,7 @@ class UserController {
   constructor({ UserService }) {
     _userService = UserService;
   }
+
   async get(req, res) {
     const { userId } = req.params;
     const user = await _userService.get(userId);
@@ -10,7 +11,8 @@ class UserController {
   }
 
   async getAll(req, res) {
-    const users = await _userService.getAll();
+    const { pageSize, pageNum } = req.query;
+    const users = await _userService.getAll(pageSize, pageNum);
     return res.send(users);
   }
 
